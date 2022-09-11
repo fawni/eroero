@@ -1,5 +1,9 @@
 # eroero
 
+[![Latest Release](https://img.shields.io/github/release/x6r/eroero.svg)](https://github.com/x6r/eroero/releases)
+[![Build Status](https://img.shields.io/github/workflow/status/x6r/eroero/build?logo=github)](https://github.com/x6r/eroero/actions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/x6r/eroero)](https://goreportcard.com/report/github.com/x6r/eroero)
+
 A tiny downloader for erome. 💄
 
 ## Installation
