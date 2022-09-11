@@ -78,7 +78,9 @@ func execute(args []string) {
 		prompt := &survey.Confirm{
 			Message: "Download anyway?",
 		}
-		survey.AskOne(prompt, &redownload)
+		if err := survey.AskOne(prompt, &redownload); err != nil {
+			log.Error(err)
+		}
 
 		if !redownload {
 			os.Exit(0)
