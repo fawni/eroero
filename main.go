@@ -63,9 +63,6 @@ func execute(args []string) {
 		os.Exit(1)
 	}
 
-	albumEl := doc.Find("#album_" + id).First()
-	var images, videos int
-
 	title := doc.Find("h1").First().Text()
 	log.Info("Found album \"", title, "\"")
 	albumTag := title + " - " + id
@@ -92,36 +89,37 @@ func execute(args []string) {
 		os.Exit(1)
 	}
 
-	albumEl.Find("div > div.media-group").Each(func(_ int, s *goquery.Selection) {
+	var i, v int
+	doc.Find("#album_" + id).First().Find("div > div.media-group").Each(func(_ int, s *goquery.Selection) {
 		var url, name string
-		if s.Find("div").HasClass("video") {
-			url, _ = s.Find(".video-lg video source").First().Attr("src")
-			name = filepath.Base(url)
-			videos++
-		} else {
+
+		switch s.Find("div").HasClass("video") {
+		case false:
 			url, _ = s.Find(".img").First().Attr("data-src")
 			name = filepath.Base(url)
-			images++
+			i++
+		default:
+			url, _ = s.Find(".video-lg video source").First().Attr("src")
+			name = filepath.Base(url)
+			v++
 		}
 
-		if url != "" {
-			log.Info("Downloading ", name)
-			if err := download(url, albumOutput+"/"+name); err != nil {
-				log.Error("Failed to download ", name, ": ", err)
-			}
+		log.Info("Downloading ", name)
+		if err := download(url, albumOutput+"/"+name); err != nil {
+			log.Error("Failed to download ", name, ": ", err)
 		}
 	})
 
-	log.Info("Downloaded ", images, " images, ", videos, " videos")
+	log.Info("Downloaded ", i, " images, ", v, " videos")
 }
 
 func download(url, name string) error {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, strings.NewReader(""))
-
 	if err != nil {
 		return err
 	}
+
 	req.Header.Add("Referer", baseURL)
 
 	res, err := client.Do(req)
