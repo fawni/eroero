@@ -9,8 +9,9 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/cheggaaa/pb"
+	"github.com/cheggaaa/pb/v3"
 	"github.com/kennygrant/sanitize"
+	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
 	"github.com/x6r/eroero/log"
 )
@@ -31,6 +32,7 @@ var (
 )
 
 func init() {
+	termenv.HideCursor()
 	cmd.PersistentFlags().StringVarP(&output, "output", "o", ".", "output files to a specific directory")
 }
 
@@ -129,7 +131,7 @@ func download(url, name string) error {
 	defer res.Body.Close()
 
 	if res.ContentLength > 1e7 {
-		log.Warn("File is too big. Download might fail.")
+		log.Warn("File is too big; download might fail.")
 	}
 
 	file, err := os.Create(name)
@@ -138,9 +140,13 @@ func download(url, name string) error {
 	}
 	defer file.Close()
 
-	bar := pb.New64(res.ContentLength).SetUnits(pb.U_BYTES)
-	bar.ShowSpeed = true
-	bar.ShowTimeLeft = true
+	tmpl := `{{counters .}} {{bar . " " (green "━") (green "━") (black "━") " "}} {{percent .}} {{speed . "%s/s"}} {{rtime .}}`
+	bar := pb.
+		New64(res.ContentLength).
+		SetWidth(80).
+		SetTemplateString(tmpl).
+		Set(pb.Bytes, true).
+		Set(pb.SIBytesPrefix, true)
 	barWriter := bar.NewProxyReader(res.Body)
 
 	bar.Start()
