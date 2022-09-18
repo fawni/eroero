@@ -140,13 +140,12 @@ func download(url, name string) error {
 	}
 	defer file.Close()
 
-	tmpl := `{{counters .}} {{bar . " " (green "━") (green "━") (black "━") " "}} {{percent .}} {{speed . "%s/s"}} {{rtime .}}`
+	tmpl := `{{counters .}} {{bar . " " (green "━") (green "━") (black "━") " "}} {{percent . | magenta}} {{speed . "%s/s" | green}} {{rtime . "%s"| yellow}}`
 	bar := pb.
 		New64(res.ContentLength).
 		SetWidth(80).
 		SetTemplateString(tmpl).
-		Set(pb.Bytes, true).
-		Set(pb.SIBytesPrefix, true)
+		Set(pb.Bytes, true)
 	barWriter := bar.NewProxyReader(res.Body)
 
 	bar.Start()
