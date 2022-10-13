@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.6
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/adrg/xdg v0.4.0
 	github.com/cheggaaa/pb/v3 v3.1.0
 	github.com/fatih/color v1.10.0
 	github.com/kennygrant/sanitize v1.2.4

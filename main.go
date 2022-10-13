@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
 	"os"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/adrg/xdg"
 	"github.com/cheggaaa/pb/v3"
 	"github.com/kennygrant/sanitize"
 	"github.com/muesli/termenv"
@@ -20,8 +22,9 @@ const baseURL = "https://www.erome.com/"
 const baseAlbumURL = baseURL + "a/"
 
 var (
-	output string
-	cmd    = &cobra.Command{
+	output     string
+	configPath = filepath.Join(xdg.ConfigHome, "eroero", "config.json")
+	cmd        = &cobra.Command{
 		Use:   "eroero <album id>",
 		Short: "eroero is a tiny downloader for erome",
 		Args:  cobra.MinimumNArgs(1),
@@ -69,10 +72,25 @@ func execute(args []string) {
 	log.Info("Found album \"", title, "\"")
 	albumTag := title + " - " + id
 
+	switch output {
+	case ".":
+		f, err := os.ReadFile(configPath)
+		if err != nil {
+			break
+		}
+		cfg := struct {
+			Output string `json:"output,omitempty"`
+		}{}
+		if err := json.Unmarshal(f, &cfg); err != nil {
+			break
+		}
+		output = cfg.Output
+	}
+
 	albumOutput := output + "/" + sanitize.Path(albumTag)
 
 	if exists(albumOutput) {
-		log.Warn("Album already downloaded.", "\n")
+		log.Warn("Album already downloaded.\n")
 		redownload := false
 		prompt := &survey.Confirm{
 			Message: "Download anyway?",
@@ -80,7 +98,6 @@ func execute(args []string) {
 		if err := survey.AskOne(prompt, &redownload); err != nil {
 			log.Error(err)
 		}
-
 		if !redownload {
 			os.Exit(0)
 		}
