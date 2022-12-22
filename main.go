@@ -22,7 +22,7 @@ const baseURL = "https://www.erome.com/"
 const baseAlbumURL = baseURL + "a/"
 
 var (
-	output     string
+	output     = "."
 	configPath = filepath.Join(xdg.ConfigHome, "eroero", "config.json")
 	cmd        = &cobra.Command{
 		Use:   "eroero <album id>",
@@ -36,7 +36,7 @@ var (
 
 func init() {
 	termenv.HideCursor()
-	cmd.PersistentFlags().StringVarP(&output, "output", "o", ".", "output files to a specific directory")
+	cmd.PersistentFlags().StringVarP(&output, "output", "o", output, "output files to a specific directory")
 }
 
 func main() {
