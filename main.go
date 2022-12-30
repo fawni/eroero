@@ -12,10 +12,10 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/adrg/xdg"
 	"github.com/cheggaaa/pb/v3"
+	"github.com/fawni/eroero/log"
 	"github.com/kennygrant/sanitize"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
-	"github.com/x6r/eroero/log"
 )
 
 const baseURL = "https://www.erome.com/"

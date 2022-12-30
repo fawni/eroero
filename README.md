@@ -1,8 +1,8 @@
 # eroero
 
-[![Latest Release](https://img.shields.io/github/release/x6r/eroero.svg)](https://github.com/x6r/eroero/releases)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/x6r/eroero/build.yml?logo=github&branch=master)](https://github.com/x6r/eroero/actions)
-[![Go Report Card](https://goreportcard.com/badge/github.com/x6r/eroero)](https://goreportcard.com/report/github.com/x6r/eroero)
+[![Latest Release](https://img.shields.io/github/release/fawni/eroero.svg)](https://github.com/fawni/eroero/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/fawni/eroero/build.yml?logo=github&branch=master)](https://github.com/fawni/eroero/actions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/fawni/eroero)](https://goreportcard.com/report/github.com/fawni/eroero)
 
 A tiny downloader for erome. 💄
 
@@ -10,14 +10,14 @@ A tiny downloader for erome. 💄
 
 ### Binaries
 
-Download a binary from the [releases](https://github.com/x6r/eroero/releases)
+Download a binary from the [releases](https://github.com/fawni/eroero/releases)
 page.
 
 ### Build from source
 
 Go 1.17 or higher required. ([install instructions](https://golang.org/doc/install.html))
 
-    go install github.com/x6r/eroero@latest
+    go install github.com/fawni/eroero@latest
 
 ## Usage
 

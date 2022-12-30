@@ -1,4 +1,4 @@
-module github.com/x6r/eroero
+module github.com/fawni/eroero
 
 go 1.17
 
